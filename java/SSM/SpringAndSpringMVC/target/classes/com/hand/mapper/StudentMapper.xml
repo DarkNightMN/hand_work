@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hand.mapper.StudentMapper">
+    <resultMap id="student" type="com.hand.dto.Student">
+        <id property="studentId" column="student_id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentAge" column="student_age"/>
+
+        <association property="department" javaType="com.hand.dto.Department">
+            <id property="departmentId" column="department_id"/>
+            <result property="departmentName" column="department_name"/>
+        </association>
+    </resultMap>
+    <insert id="addStudent">
+        insert into student(student_name,student_age,department_id)
+        values(#{studentName},#{studentAge},#{department.departmentId})
+    </insert>
+    <update id="updateStudent">
+        update student
+        set student_name=#{studentName},
+            student_age=#{studentAge},
+            department_id=#{department.departmentId}
+        where student_id=#{studentId}
+    </update>
+    <delete id="deleteStudent">
+        delete from student where student_id=#{studentId}
+    </delete>
+
+    <select id="selectById" resultMap="student">
+        SELECT
+        s.student_id,
+        s.student_name,
+        s.student_age,
+        s.department_id,
+        d.department_name
+        FROM
+        student s,department d
+        where s.department_id=d.department_id and s.student_id=#{studentId}
+    </select>
+
+    <select id="selectAll" resultMap="student">
+                SELECT
+        s.student_id,
+        s.student_name,
+        s.student_age,
+        s.department_id,
+        d.department_name
+        FROM
+        student s,department d
+        where s.department_id=d.department_id
+    </select>
+
+
+</mapper>

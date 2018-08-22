@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="test.dao.StudentMapper">
+
+    <resultMap id="Student" type="test.pojo.Student">
+        <id column="student_id" property="studentId"/>
+        <result column="student_name" property="studentName"/>
+        <result column="student_age" property="studentName"/>
+
+        <!--分步查询-->
+        <association property="department"
+                     select="test.dao.DepartmentMapper.selectByDepId"
+                     column="department_id"/>
+    </resultMap>
+
+    <!--直接指定对象属性-->
+    <!--<result column="department_id" property="department.departmentId"/>-->
+    <!--<result column="department_name" property="department.departmentName"/>-->
+    <!--指定javaType-->
+    <!--<association property="department" javaType="test.pojo.Department">-->
+        <!--<id column="department_id" property="departmentId"/>-->
+        <!--<result column="department_name" property="departmentName"/>-->
+    <!--</association>-->
+
+
+
+
+    <select id="selectById" resultMap="Student">
+        select * from student where student_id=#{studentId}
+    </select>
+
+    <!--<select id="selectById" resultMap="Student">-->
+    <!--SELECT-->
+    <!--s.student_id,-->
+    <!--s.student_name,-->
+    <!--s.student_age,-->
+    <!--d.department_id,-->
+    <!--d.department_name-->
+    <!--FROM-->
+    <!--student s,department d-->
+    <!--where s.department_id=d.department_id-->
+    <!--and s.student_id=#{studentId}-->
+    <!--</select>-->
+
+</mapper>

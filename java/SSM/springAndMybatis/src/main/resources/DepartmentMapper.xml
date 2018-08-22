@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="test.dao.DepartmentMapper">
+
+    <resultMap id="department" type="test.pojo.Department">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+    </resultMap>
+
+    <select id="selectByDepId" resultMap="department">
+        select * from department where department_id=#{departmentId}
+    </select>
+
+</mapper>
