@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+"
+>
+
+    <context:annotation-config/>
+
+    <!--加载Bean-->
+    <bean class="test.pojo.Student"/>
+    <bean class="test.controller.StudentController"/>
+    <bean class="test.daoImpl.StudentService"/>
+
+    <bean class="test.pojo.Department"/>
+    <bean class="test.controller.DepartmentController"/>
+    <bean class="test.daoImpl.DepartmentService"/>
+
+    <!--扫描某个Mapper接口-->
+    <!--<bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="test.dao.StudentMapper" />-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    <!--</bean>-->
+
+    <!--扫描某个package下的所有Mapper接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="test.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!--加载db.properties-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--配置dataSource-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driver" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+
+
+</beans>
